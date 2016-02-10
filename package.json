@@ -1,0 +1,19 @@
+{
+  "name": "exercise2",
+  "version": "1.0.0",
+  "description": "Interview exercise for ForRent.com",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worsnupd/exercise2.git"
+  },
+  "author": "Daniel Worsnup",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/worsnupd/exercise2/issues"
+  },
+  "homepage": "https://github.com/worsnupd/exercise2#readme"
+}
