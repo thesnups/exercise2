@@ -24,6 +24,13 @@ function handleError(error) {
     this.emit('end');
 }
 
+// Minify HTML files and copy to build/
+gulp.task('html', function() {
+    return gulp.src('src/**/*.html')
+        .pipe(htmlmin({ collapseWhitespace: true }))
+        .pipe(gulp.dest('build'));
+});
+
 // Clean the build/ directory
 gulp.task('clean', function() {
     return del([
@@ -31,4 +38,9 @@ gulp.task('clean', function() {
     ]);
 });
 
-gulp.task('default', []);
+// Watch files for changes and update build
+gulp.task('watch', function() {
+    gulp.watch('src/**/*.html', ['html']);
+});
+
+gulp.task('default', ['html']);
