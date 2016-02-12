@@ -31,6 +31,17 @@ gulp.task('html', function() {
         .pipe(gulp.dest('build'));
 });
 
+// Concatenate, uglify, and copy JS to build/
+gulp.task('scripts', function() {
+    var src = vendorJs.concat(['src/**/*.js']);
+
+    return gulp.src(src)
+        .pipe(concat('all.min.js'))
+        .pipe(ngAnnotate()).on('error', handleError)
+        .pipe(uglify({ preserveComments: 'license', mangle: false })).on('error', handleError)
+        .pipe(gulp.dest('build'));
+});
+
 // Copy images from src/ to build/
 gulp.task('images', function() {
     return gulp.src('src/**/*.+(ico|jpg)')
@@ -47,7 +58,8 @@ gulp.task('clean', function() {
 // Watch files for changes and update build
 gulp.task('watch', function() {
     gulp.watch('src/**/*.html', ['html']);
+    gulp.watch('src/**/*.js', ['scripts']);
     gulp.watch('src/**/*.+(ico|jpg)', ['images']);
 });
 
-gulp.task('default', ['html', 'images']);
+gulp.task('default', ['html', 'scripts', 'images']);
