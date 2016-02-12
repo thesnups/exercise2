@@ -42,6 +42,20 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('build'));
 });
 
+// Concatenate, compile SASS, and copy CSS to build/
+gulp.task('styles', function() {
+    var src = vendorCss.concat(['src/**/*.+(css|scss)']);
+    var sassFilter = filter('**/*.scss', { restore: true });
+
+    return gulp.src(src)
+        .pipe(sassFilter)
+        .pipe(sass())
+        .pipe(sassFilter.restore)
+        .pipe(concat('all.min.css'))
+        .pipe(cssnano())
+        .pipe(gulp.dest('build'));
+});
+
 // Copy images from src/ to build/
 gulp.task('images', function() {
     return gulp.src('src/**/*.+(ico|jpg)')
@@ -59,7 +73,8 @@ gulp.task('clean', function() {
 gulp.task('watch', function() {
     gulp.watch('src/**/*.html', ['html']);
     gulp.watch('src/**/*.js', ['scripts']);
+    gulp.watch('src/**/*.+(css|scss)', ['styles']);
     gulp.watch('src/**/*.+(ico|jpg)', ['images']);
 });
 
-gulp.task('default', ['html', 'scripts', 'images']);
+gulp.task('default', ['html', 'scripts', 'styles', 'images']);
