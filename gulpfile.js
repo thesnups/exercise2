@@ -31,6 +31,12 @@ gulp.task('html', function() {
         .pipe(gulp.dest('build'));
 });
 
+// Copy images from src/ to build/
+gulp.task('images', function() {
+    return gulp.src('src/**/*.+(ico|jpg)')
+        .pipe(gulp.dest('build'));
+});
+
 // Clean the build/ directory
 gulp.task('clean', function() {
     return del([
@@ -41,6 +47,7 @@ gulp.task('clean', function() {
 // Watch files for changes and update build
 gulp.task('watch', function() {
     gulp.watch('src/**/*.html', ['html']);
+    gulp.watch('src/**/*.+(ico|jpg)', ['images']);
 });
 
-gulp.task('default', ['html']);
+gulp.task('default', ['html', 'images']);
