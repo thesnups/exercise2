@@ -12,31 +12,10 @@ var vendorCss = [
     'node_modules/bootstrap/dist/css/bootstrap.min.css'
 ];
 
-function handleError(error) {
-    console.log(error.toString());
-    this.emit('end');
-}
+var pipes = {};
 
-// Minify HTML files and copy to build/
-gulp.task('html', function() {
-    return gulp.src('src/**/*.html')
-        .pipe(plugins.htmlmin({ collapseWhitespace: true }))
-        .pipe(gulp.dest('build'));
-});
-
-// Concatenate, uglify, and copy JS to build/
-gulp.task('scripts', function() {
-    return gulp.src('src/**/*.js')
-        .pipe(plugins.angularFilesort())
-        .pipe(plugins.ngAnnotate()).on('error', handleError)
-        .pipe(plugins.addSrc.prepend(vendorJs)) // Add vendor scripts to beginning of stream
-        .pipe(plugins.concat('all.min.js'))
-        .pipe(plugins.uglify({ preserveComments: 'license', mangle: false })).on('error', handleError)
-        .pipe(gulp.dest('build'));
-});
-
-// Concatenate, compile SASS, and copy CSS to build/
-gulp.task('styles', function() {
+// Stylesheets pipe
+pipes.stylesPipe = function() {
     var src = vendorCss.concat(['src/**/*.+(css|scss)']);
     var sassFilter = plugins.filter('**/*.scss', { restore: true });
 
@@ -45,7 +24,43 @@ gulp.task('styles', function() {
         .pipe(plugins.sass())
         .pipe(sassFilter.restore)
         .pipe(plugins.concat('all.min.css'))
-        .pipe(plugins.cssnano())
+        .pipe(plugins.cssnano());
+}
+
+// Scripts pipe
+pipes.scriptsPipe = function() {
+    return gulp.src('src/**/*.js')
+        .pipe(plugins.angularFilesort())
+        .pipe(plugins.ngAnnotate()).on('error', handleError)
+        .pipe(plugins.addSrc.prepend(vendorJs)) // Add vendor scripts to beginning of stream
+        .pipe(plugins.concat('all.min.js'))
+        .pipe(plugins.uglify({ preserveComments: 'license', mangle: false })).on('error', handleError);
+}
+
+// Error handler
+function handleError(error) {
+    console.log(error.toString());
+    this.emit('end');
+}
+
+// Minify HTML files and copy to build/
+gulp.task('html', function() {
+    return gulp.src('src/**/*.html')
+        .pipe(plugins.inject(pipes.stylesPipe(), { relative: true }))
+        .pipe(plugins.inject(pipes.scriptsPipe(), { relative: true }))
+        .pipe(plugins.htmlmin({ collapseWhitespace: true }))
+        .pipe(gulp.dest('build'));
+});
+
+// Concatenate, uglify, and copy JS to build/
+gulp.task('scripts', function() {
+    return pipes.scriptsPipe()
+        .pipe(gulp.dest('build'));
+});
+
+// Concatenate, compile SASS, and copy CSS to build/
+gulp.task('styles', function() {
+    return pipes.stylesPipe()
         .pipe(gulp.dest('build'));
 });
 
