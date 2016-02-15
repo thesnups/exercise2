@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app" ng-controller="MainController">
+<html lang="en" ng-app="app" ng-controller="MainController as vm">
     <head>
         <meta charset="utf-8">
         <title>ForRent Interview Exercise</title>
@@ -10,8 +10,15 @@
         <link rel="icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
-        <h1>ForRent Interview Exercise</h1>
-        <span>{{test.definitions[0].text}}</span>
+        <div class="container">
+            <h1>ForRent Interview Exercise</h1>
+            <div class="list-group">
+                <a ng-repeat="word in vm.words" href="#" class="list-group-item">
+                    {{word.definitions[0].text}}
+                </a>
+            </div>
+        </div>
+
         <!-- inject:js -->
         <!-- endinject -->
     </body>
