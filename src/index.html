@@ -18,7 +18,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">About the App</div>
                 <div class="panel-body">
-                    <p>This app enables you to view definitions of several preloaded words and optionally load definitions of additional words if desired. All word definitions pulled from <a href= "https://market.mashape.com/montanaflynn/dictionary" target="_blank">Mashape Dictionary API</a>.</p>
+                    <p>This app enables you to view definitions of several preloaded words and optionally load definitions of additional words if desired. All word definitions are pulled from <a href= "https://market.mashape.com/montanaflynn/dictionary" target="_blank">Mashape Dictionary API</a>.</p>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -27,7 +27,7 @@
                     <a ng-repeat="worddef in vm.worddefs" href="#" class="list-group-item clearfix">
                         {{worddef.word + ': ' + worddef.definitions[0].text}}
                         <span class="pull-right">
-                            <span ng-click="vm.worddefs.splice($index, 1)" class="glyphicon glyphicon-trash"></span>
+                            <span ng-click="vm.delWord($index)" class="glyphicon glyphicon-trash"></span>
                         </span>
                     </a>
                 </div>
@@ -40,7 +40,10 @@
                             <button ng-click="vm.define()" class="btn btn-primary" type="button">Define</button>
                         </span>
                     </div>
-                    <div ng-show="vm.showError" class="define-error alert alert-danger" role="alert"><strong>Uh oh!</strong> {{vm.errorMsg}}</div>
+                    <div ng-show="vm.errorIsVisible" class="define-error alert alert-danger" role="alert">
+                        <button ng-click="vm.hideError()" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Uh oh!</strong> {{vm.errorMsg}}
+                    </div>
                 </div>
             </div>
         </div>

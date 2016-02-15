@@ -9,12 +9,15 @@
         var vm = this;
         vm.worddefs = [];
         vm.newWord = '';
+        vm.delWord = delWord;
         vm.define = define;
-        vm.showError = false;
+        vm.errorIsVisible = false;
         vm.errorMsg = '';
+        vm.hideError = hideError;
 
         activate();
 
+        // Loads a few startup definitions into the model
         function activate() {
             var startupWords = ['rent', 'apartment', 'dominion', 'enterprise', 'angular', 'javascript'];
             for(var i = 0; i < startupWords.length; ++i) {
@@ -23,6 +26,12 @@
             }
         }
 
+        // Deletes a word from the list
+        function delWord(idx) {
+            vm.worddefs.splice(idx, 1);
+        }
+
+        // Attempts to retrieve a definition from the Dictionary provider
         function define() {
             var newWord = vm.newWord;
             vm.newWord = '';
@@ -31,17 +40,23 @@
                 .then(function(data) {
                     if(0 ==data.definitions.length) {
                         vm.errorMsg = 'No definitions found for "' + newWord + '"';
-                        vm.showError = true;
+                        vm.errorIsVisible = true;
                     }
                     else {
                         data.word = newWord;
                         vm.worddefs.push(data);
-                        vm.showError = false;
+                        vm.errorIsVisible = false;
                     }
                 }, function(data) {
                     vm.errorMsg = data;
-                    vm.showError = true;
+                    vm.errorIsVisible = true;
                 });
+        }
+
+        // Hides the error message
+        function hideError() {
+            vm.errorIsVisible = false;
+            vm.errorMsg = '';
         }
     }
 })();

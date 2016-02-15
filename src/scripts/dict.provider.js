@@ -11,6 +11,7 @@
             var defCache = {};
             var baseUrl = 'https://montanaflynn-dictionary.p.mashape.com/define';
 
+            // Requests the definitions of <word> from the API
             var hitApi = function(word) {
                 var deferred = $q.defer();
 
@@ -33,6 +34,7 @@
                 return deferred.promise;
             }
 
+            // Tries to pull word definition from cache, hits the API if not found
             var define = function(word) {
                 if(defCache.hasOwnProperty(word)) {
                     $log.log('Word "' + word + '" retrieved from cache.');
