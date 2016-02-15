@@ -7,7 +7,8 @@
 
     function MainController(dict) {
         var vm = this;
-        vm.words = {};
+        vm.worddefs = [];
+        vm.newWord = '';
         vm.define = define;
 
         activate();
@@ -15,14 +16,19 @@
         function activate() {
             var startupWords = ['rent', 'apartment', 'dominion', 'enterprise', 'angular', 'javascript'];
             for(var i = 0; i < startupWords.length; ++i) {
-                define(startupWords[i])
+                vm.newWord = startupWords[i];
+                define();
             }
         }
 
-        function define(word) {
-            dict.define(word)
+        function define() {
+            var newWord = vm.newWord;
+            vm.newWord = '';
+            
+            dict.define(newWord)
                 .then(function(data) {
-                    vm.words[word] = data;
+                    data.word = newWord;
+                    vm.worddefs.push(data);
                 }, function(data) {
                     alert(data);
                 });

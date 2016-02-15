@@ -10,12 +10,35 @@
         <link rel="icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container">
+                <a class="navbar-brand" href="#">ForRent Interview Exercise <small>by Daniel Worsnup</small></a>
+            </div>
+        </nav>
         <div class="container">
-            <h1>ForRent Interview Exercise</h1>
-            <div class="list-group">
-                <a ng-repeat="word in vm.words" href="#" class="list-group-item">
-                    {{word.definitions[0].text}}
-                </a>
+            <div class="panel panel-default">
+                <div class="panel-heading">About the App</div>
+                <div class="panel-body">
+                    <p>This app enables you to view definitions of several preloaded words and optionally load definitions of additional words if desired. All word definitions pulled from <a href= "https://market.mashape.com/montanaflynn/dictionary" target="_blank">Mashape Dictionary API</a>.</p>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Words</div>
+                <div class="list-group">
+                    <a ng-repeat="worddef in vm.worddefs" href="#" class="list-group-item">
+                        {{worddef.word + ': ' + worddef.definitions[0].text}}
+                    </a>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input ng-model="vm.newWord" ng-enter="vm.define()" type="text" class="form-control" placeholder="Define another word...">
+                        <span class="input-group-btn">
+                            <button ng-click="vm.define()" class="btn btn-primary" type="button">Define</button>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
 

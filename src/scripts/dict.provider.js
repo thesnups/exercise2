@@ -8,7 +8,7 @@
     function DictProvider() {
         this.$get = function($http, $q, $log) {
             var dict = this;
-            var wordCache = {};
+            var defCache = {};
             var baseUrl = 'https://montanaflynn-dictionary.p.mashape.com/define';
 
             var hitApi = function(word) {
@@ -34,13 +34,13 @@
             }
 
             var define = function(word) {
-                if(wordCache.hasOwnProperty(word)) {
+                if(defCache.hasOwnProperty(word)) {
                     $log.log('Word "' + word + '" retrieved from cache.');
-                    return wordCache[word];
+                    return defCache[word];
                 }
 
                 var newWord = hitApi(word);
-                wordCache[word] = newWord;
+                defCache[word] = newWord;
 
                 $log.log('Word "' + word + '" retrieved from API.');
 
