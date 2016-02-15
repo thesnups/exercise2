@@ -46,8 +46,8 @@ function handleError(error) {
 // Minify HTML files and copy to build/
 gulp.task('html', function() {
     return gulp.src('src/**/*.html')
-        .pipe(plugins.inject(pipes.stylesPipe(), { relative: true }))
-        .pipe(plugins.inject(pipes.scriptsPipe(), { relative: true }))
+        .pipe(plugins.inject(pipes.stylesPipe(), { relative: true, removeTags: true }))
+        .pipe(plugins.inject(pipes.scriptsPipe(), { relative: true, removeTags: true }))
         .pipe(plugins.htmlmin({ collapseWhitespace: true }))
         .pipe(gulp.dest('build'));
 });
