@@ -30,8 +30,8 @@ pipes.stylesPipe = function() {
 // Scripts pipe
 pipes.scriptsPipe = function() {
     return gulp.src('src/**/*.js')
-        .pipe(plugins.angularFilesort())
         .pipe(plugins.ngAnnotate()).on('error', handleError)
+        .pipe(plugins.angularFilesort())
         .pipe(plugins.addSrc.prepend(vendorJs)) // Add vendor scripts to beginning of stream
         .pipe(plugins.concat('all.min.js'))
         .pipe(plugins.uglify({ preserveComments: 'license', mangle: false })).on('error', handleError);
