@@ -27,11 +27,15 @@ function handleError(error) {
     this.emit('end');
 }
 
-// Process and minify index file and copy to build/
-gulp.task('index', function() {
-    return gulp.src(indexFile)
+// Process and minify HTML files and copy to build/
+gulp.task('html', function() {
+    var indexFilter = plugins.filter('index.html', { restore: true });
+
+    return gulp.src('src/**/*.html')
+        .pipe(indexFilter)
         .pipe(plugins.injectString.replace('<!--INJECTCSS-->', '<link rel="stylesheet" href="' + cssOutFile + '">'))
         .pipe(plugins.injectString.replace('<!--INJECTJS-->', '<script src="' + jsOutFile + '"></script>'))
+        .pipe(indexFilter.restore)
         .pipe(plugins.htmlmin({ collapseWhitespace: true }))
         .pipe(gulp.dest('build'));
 });
@@ -82,10 +86,10 @@ gulp.task('clean', function() {
 
 // Watch files for changes and update build
 gulp.task('watch', function() {
-    gulp.watch(indexFile, ['index']);
+    gulp.watch('src/**/*.html', ['html']);
     gulp.watch('src/**/*.js', ['scripts']);
     gulp.watch('src/**/*.+(css|scss)', ['styles']);
     gulp.watch('src/**/*.+(ico|jpg)', ['images']);
 });
 
-gulp.task('default', ['index', 'scripts', 'styles', 'images', 'fonts']);
+gulp.task('default', ['html','scripts', 'styles', 'images', 'fonts']);

@@ -20,6 +20,10 @@ body {
     font-size: 18px;
 }
 
+a.list-group-item, .back-btn {
+    cursor: pointer;
+}
+
 .define-error {
     margin-top:15px;
     margin-bottom:0;
