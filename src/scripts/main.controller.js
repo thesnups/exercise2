@@ -10,6 +10,8 @@
         vm.worddefs = [];
         vm.newWord = '';
         vm.define = define;
+        vm.showError = false;
+        vm.errorMsg = '';
 
         activate();
 
@@ -24,13 +26,21 @@
         function define() {
             var newWord = vm.newWord;
             vm.newWord = '';
-            
+
             dict.define(newWord)
                 .then(function(data) {
-                    data.word = newWord;
-                    vm.worddefs.push(data);
+                    if(0 ==data.definitions.length) {
+                        vm.errorMsg = 'No definitions found for "' + newWord + '"';
+                        vm.showError = true;
+                    }
+                    else {
+                        data.word = newWord;
+                        vm.worddefs.push(data);
+                        vm.showError = false;
+                    }
                 }, function(data) {
-                    alert(data);
+                    vm.errorMsg = data;
+                    vm.showError = true;
                 });
         }
     }

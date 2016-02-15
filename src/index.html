@@ -27,7 +27,7 @@
                     <a ng-repeat="worddef in vm.worddefs" href="#" class="list-group-item clearfix">
                         {{worddef.word + ': ' + worddef.definitions[0].text}}
                         <span class="pull-right">
-                            <span class="glyphicon glyphicon-trash"></span>
+                            <span ng-click="vm.worddefs.splice($index, 1)" class="glyphicon glyphicon-trash"></span>
                         </span>
                     </a>
                 </div>
@@ -40,6 +40,7 @@
                             <button ng-click="vm.define()" class="btn btn-primary" type="button">Define</button>
                         </span>
                     </div>
+                    <div ng-show="vm.showError" class="define-error alert alert-danger" role="alert"><strong>Uh oh!</strong> {{vm.errorMsg}}</div>
                 </div>
             </div>
         </div>
