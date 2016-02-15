@@ -5,8 +5,7 @@
         <title>ForRent Interview Exercise</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-        <!-- inject:css -->
-        <!-- endinject -->
+        <!--INJECTCSS-->
         <link rel="icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
@@ -25,8 +24,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Words</div>
                 <div class="list-group">
-                    <a ng-repeat="worddef in vm.worddefs" href="#" class="list-group-item">
+                    <a ng-repeat="worddef in vm.worddefs" href="#" class="list-group-item clearfix">
                         {{worddef.word + ': ' + worddef.definitions[0].text}}
+                        <span class="pull-right">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -41,8 +43,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- inject:js -->
-        <!-- endinject -->
+        <!--INJECTJS-->
     </body>
 </html>

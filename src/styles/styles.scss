@@ -7,3 +7,15 @@ $bg-color: #f3f3f3;
 body {
     background-color: $bg-color;
 }
+
+.navbar-brand {
+    font-size: 21px;
+
+    small {
+        font-size: 15px;
+    }
+}
+
+.panel-heading {
+    font-size: 18px;
+}
