@@ -8,7 +8,7 @@
     function DictProvider() {
         this.$get = function($http, $q, $log) {
             var dict = this;
-            var defCache = {};
+            var promiseCache = {};
             var baseUrl = 'https://montanaflynn-dictionary.p.mashape.com/define';
 
             // Requests the definitions of <word> from the API
@@ -26,6 +26,7 @@
                     },
                     responseType: 'json'
                 }).success(function(data) {
+                    data.word = word; // Add the defined word to response object
                     deferred.resolve(data);
                 }).error(function() {
                     deferred.reject('There was an error.');
@@ -36,21 +37,33 @@
 
             // Tries to pull word definition from cache, hits the API if not found
             var define = function(word) {
-                if(defCache.hasOwnProperty(word)) {
+                if(promiseCache.hasOwnProperty(word)) {
                     $log.log('Word "' + word + '" retrieved from cache.');
-                    return defCache[word];
+                    return promiseCache[word];
                 }
 
-                var newWord = hitApi(word);
-                defCache[word] = newWord;
+                var promise = hitApi(word);
+                promiseCache[word] = promise;
 
                 $log.log('Word "' + word + '" retrieved from API.');
 
-                return newWord;
+                return promise;
+            }
+
+            // Tries to pull multiple word definitions from cache, hits the API if not found
+            var defineMultiple = function(words) {
+                var promises = [];
+
+                for(var i = 0; i < words.length; ++i) {
+                    promises.push(define(words[i]));
+                }
+
+                return $q.all(promises);
             }
 
             return {
-                define: define
+                define: define,
+                defineMultiple: defineMultiple
             };
         }
     }

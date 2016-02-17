@@ -8,6 +8,7 @@
     function MainController(dict, $location, $routeParams) {
         var vm = this;
 
+        vm.preloadComplete = false;
         vm.worddefs = [];
         vm.newWord = '';
         vm.delWord = delWord;
@@ -25,11 +26,16 @@
 
         // Loads a few startup definitions into the model
         function activate() {
-            var startupWords = ['rent', 'apartment', 'dominion', 'enterprise', 'angular', 'JavaScript'];
-            for(var i = 0; i < startupWords.length; ++i) {
-                vm.newWord = startupWords[i];
-                define();
-            }
+            dict.defineMultiple(['rent', 'apartment', 'dominion', 'enterprise', 'angular', 'JavaScript'])
+                .then(function(dataArr) {
+                    for(var i = 0; i < dataArr.length; ++i) {
+                        handleNewWord(dataArr[i]);
+                    }
+                    vm.preloadComplete = true;
+                }, function(data) {
+                    vm.errorMsg = data;
+                    vm.errorIsVisible = true;
+                });
         }
 
         // Deletes a word from the list
@@ -44,19 +50,22 @@
 
             dict.define(newWord)
                 .then(function(data) {
-                    if(0 === data.definitions.length) {
-                        vm.errorMsg = 'No definitions found for "' + newWord + '"';
-                        vm.errorIsVisible = true;
-                    }
-                    else {
-                        data.word = newWord;
-                        vm.worddefs.unshift(data);
-                        vm.errorIsVisible = false;
-                    }
+                    handleNewWord(data);
                 }, function(data) {
                     vm.errorMsg = data;
                     vm.errorIsVisible = true;
                 });
+        }
+
+        function handleNewWord(data) {
+            if(0 === data.definitions.length) {
+                vm.errorMsg = 'No definitions found...';
+                vm.errorIsVisible = true;
+            }
+            else {
+                vm.worddefs.unshift(data);
+                vm.errorIsVisible = false;
+            }
         }
 
         // Returns the currently selected word
