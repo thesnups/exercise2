@@ -1,11 +1,13 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <span ng-click="vm.viewWords()" class="back-btn glyphicon glyphicon-chevron-left"></span>
-        Definitions for "{{vm.getWord()}}" ({{vm.getDefs().length}})
+<div class="single-word">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span ng-click="vm.viewWords()" class="back-btn glyphicon glyphicon-chevron-left"></span>
+            Definitions for "{{vm.getWord()}}" ({{vm.getDefs().length}})
+        </div>
+        <ul class="list-group">
+            <li ng-repeat="def in vm.getDefs()" ng-click="vm.viewWord($index)" class="list-group-item">
+                {{$index+1}}. {{def.text}}
+            </li>
+        </ul>
     </div>
-    <ul class="list-group">
-        <li ng-repeat="def in vm.getDefs()" ng-click="vm.viewWord($index)" class="list-group-item">
-            {{$index+1}}. {{def.text}}
-        </li>
-    </ul>
 </div>

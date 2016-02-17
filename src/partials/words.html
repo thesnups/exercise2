@@ -1,31 +1,33 @@
-<div class="panel panel-default" ng-show="vm.preloadComplete">
-    <div class="panel-heading">Words</div>
-    <div class="list-group">
-        <a ng-repeat="worddef in vm.worddefs" ng-click="vm.viewSingleWord($index)" class="list-group-item">
-            {{worddef.word}}
-            <span class="label label-primary">{{worddef.definitions.length}} definitions</span>
-            <span class="pull-right">
-                <span ng-click="vm.delWord($index)" class="glyphicon glyphicon-trash"></span>
-            </span>
-        </a>
-    </div>
-</div>
-<div class="panel panel-default" ng-show="!vm.preloadComplete">
-    <div class="panel-body">
-        Loading words...
-    </div>
-</div>
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="input-group">
-            <input ng-model="vm.newWord" ng-enter="vm.define()" type="text" class="form-control" placeholder="Define another word...">
-            <span class="input-group-btn">
-                <button ng-click="vm.define()" class="btn btn-primary" type="button">Define</button>
-            </span>
+<div class="all-words">
+    <div class="panel panel-default" ng-show="vm.preloadComplete">
+        <div class="panel-heading">Words</div>
+        <div class="list-group">
+            <a ng-repeat="worddef in vm.worddefs" ng-click="vm.viewSingleWord($index)" class="list-group-item">
+                {{worddef.word}}
+                <span class="label label-primary">{{worddef.definitions.length}} definitions</span>
+                <span class="pull-right">
+                    <span ng-click="vm.delWord($index)" class="glyphicon glyphicon-trash"></span>
+                </span>
+            </a>
         </div>
-        <div ng-show="vm.errorIsVisible" class="define-error alert alert-danger" role="alert">
-            <button ng-click="vm.hideError()" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Uh oh!</strong> {{vm.errorMsg}}
+    </div>
+    <div class="panel panel-default" ng-show="!vm.preloadComplete">
+        <div class="panel-body">
+            Loading words...
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="input-group">
+                <input ng-model="vm.newWord" ng-enter="vm.define()" type="text" class="form-control" placeholder="Define another word...">
+                <span class="input-group-btn">
+                    <button ng-click="vm.define()" class="btn btn-primary" type="button">Define</button>
+                </span>
+            </div>
+            <div ng-show="vm.errorIsVisible" class="define-error alert alert-danger" role="alert">
+                <button ng-click="vm.hideError()" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Uh oh!</strong> {{vm.errorMsg}}
+            </div>
         </div>
     </div>
 </div>

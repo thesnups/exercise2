@@ -16,6 +16,27 @@ body {
     }
 }
 
+.animate-fade {
+    -webkit-transition: opacity linear 0.2s;
+            transition: opacity linear 0.2s;
+}
+
+.animate-fade.ng-hide,
+.animate-fade.ng-enter,
+.animate-fade.ng-leave.ng-leave-active {
+    opacity: 0;
+}
+
+.animate-fade.ng-leave,
+.animate-fade.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+
+.animate-fade.ng-leave,
+.animate-fade.ng-leave.ng-leave-active {
+    position: absolute;
+}
+
 .panel-heading {
     font-size: 18px;
 }

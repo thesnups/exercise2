@@ -10,7 +10,8 @@ var jsOutFile = "js/all.min.js";
 
 var vendorJs = [
     'node_modules/angular/angular.min.js',
-    'node_modules/angular-route/angular-route.min.js'
+    'node_modules/angular-route/angular-route.min.js',
+    'node_modules/angular-animate/angular-animate.min.js'
 ];
 
 var vendorCss = [
