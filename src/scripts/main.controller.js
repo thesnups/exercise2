@@ -50,8 +50,8 @@
         }
 
         // Function: defineBtnClicked
-        // Description: Retrieves a definition from the Dictionary provider, adds it 
-        //  to the model, and views the definitions. Displays an error message on failure
+        // Description: Retrieves a definition from the Dictionary provider and adds it 
+        //  to the model. Displays an error message on failure
         function defineBtnClicked() {
             if('' === vm.newWord.trim()) {
                 showError('Please enter a word to define.');
@@ -62,12 +62,7 @@
                 dict.define(vm.newWord)
                     .then(function(data) {
                         vm.definitionLoading = false;
-
-                        // On success, clear the input field and switch to the definitions view
-                        if(handleNewWord(data)) {
-                            vm.newWord = '';
-                            viewSingleWord(0);
-                        }
+                        if(handleNewWord(data)) vm.newWord = ''; // Clear the input field on success
                     }, function(data) {
                         showError(data);
                         vm.definitionLoading = false;
