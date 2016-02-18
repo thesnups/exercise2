@@ -32,9 +32,7 @@
                 }).success(function(data) {
                     if(200 != data.status) {
                         deferred.reject('There was an error loading the data.');
-                    }
-                    else if(0 == data.count) {
-                        deferred.reject('No definitions found for "' + word + '".');
+                        return;
                     }
 
                     // Extract definitions from API response
@@ -81,8 +79,7 @@
                     });
 
                     // Return the result object
-                    if(0 !== definitions.length) deferred.resolve({ word: word, definitions: definitions });
-                    else deferred.reject('No definitions found for "' + word + '".');
+                    deferred.resolve({ word: word, definitions: definitions });
                 }).error(function() {
                     deferred.reject('There was an error loading the data.');
                 });

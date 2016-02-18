@@ -33,7 +33,7 @@
         // Function: activate
         // Description: Loads a few startup definitions into the model
         function activate() {
-            dict.defineMultiple(['rent', 'dominion', 'enterprise', 'angular']) // TODO: handle preloading of undefined words
+            dict.defineMultiple(['rent', 'dominion', 'enterprise', 'angular', 'effective', 'communication'])
                 .then(function(dataArr) {
                     for(var i = 0; i < dataArr.length; ++i) {
                         handleNewWord(dataArr[i]);
@@ -52,28 +52,40 @@
         }
 
         // Function: defineBtnClicked
-        // Description: Retrieves a definition from the Dictionary provider and adds it 
-        //  to the model. Displays an error message on failure
-        function defineBtnClicked(newWord) {
-            vm.definitionLoading = true;
+        // Description: Retrieves a definition from the Dictionary provider, adds it 
+        //  to the model, and views the definitions. Displays an error message on failure
+        function defineBtnClicked() {
+            if('' === vm.newWord.trim()) {
+                showError('Please enter a word to define.');
+            }
+            else {
+                vm.definitionLoading = true;
 
-            dict.define(vm.newWord)
-                .then(function(data) {
-                    handleNewWord(data);
-                    vm.newWord = '';
-                    vm.definitionLoading = false;
-                }, function(data) {
-                    showError(data);
-                    vm.definitionLoading = false;
-                });
+                dict.define(vm.newWord)
+                    .then(function(data) {
+                        vm.newWord = '';
+                        vm.definitionLoading = false;
+                        if(handleNewWord(data)) viewSingleWord(0); // View the word's definitions immediately
+                    }, function(data) {
+                        showError(data);
+                        vm.definitionLoading = false;
+                    });
+            }   
         }
 
         // Function: handleNewWord
         // Description: Adds a word and it's definitions to the model or displays an error
         //  message if no definitions were found for the word
+        // Returns: true if the word was added to the model or false otherwise
         function handleNewWord(data) {
-            vm.worddefs.unshift(data);
-            hideError();
+            if(0 !== data.definitions.length) {
+                vm.worddefs.unshift(data);
+                hideError();
+                return true;
+            }
+
+            showError('No definitions found for "' + data.word + "'.");
+            return false;
         }
 
         // Function: getWord
