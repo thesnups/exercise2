@@ -22,8 +22,8 @@
         vm.defineBtnClicked = defineBtnClicked;
 
         // Single word view
-        vm.selectedWord;
-        vm.selectedDefs;
+        vm.getSelectedWord = getSelectedWord;
+        vm.getSelectedDefs = getSelectedDefs;
         vm.viewWords = viewWords;
 
         activate();
@@ -105,14 +105,26 @@
             vm.errorMsg = '';
         }
 
+        // Function: getSelectedWord
+        // Description: Returns the selected word for the single word view
+        function getSelectedWord() {
+            return $routeParams.word;
+        }
+
+        // Function: getSelectedDefs
+        // Description: Returns the selected word's definitions for the single word view
+        function getSelectedDefs() {
+            var word = $routeParams.word;
+            var worddefs = vm.worddefs.filter(function(val) { return val.word === word; });
+            if(0 !== worddefs.length) return worddefs[0].definitions;
+
+            viewWords();
+            showError('Word "' + word + '" has not been defined yet.');
+        }
+
         // Function: viewSingleWord
         // Description: Shows the definitions view
         function viewSingleWord(idx) {
-            vm.selectedWord = vm.worddefs[idx].word;
-            var worddefs = vm.worddefs.filter(function(val) { return val.word === vm.selectedWord; });
-            vm.selectedDefs = worddefs[0].definitions;
-
-            // Set the route
             $location.path('/word/' + vm.worddefs[idx].word);
         }
 
