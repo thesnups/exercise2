@@ -10,6 +10,7 @@
             var dict = this;
             var promiseCache = {};
             var baseUrl = 'http://api.pearson.com/v2/dictionaries/entries';
+            var allowedDatasets = ['ldoce5', 'lasde', 'wordwise', 'laad3']; // These dictionaries provide English definitions of words
 
             var isArray = function(obj) {
                 return Object.prototype.toString.call(obj) === '[object Array]';
@@ -41,20 +42,33 @@
 
                     for(var i = 0; i < data.results.length; ++i) {
                         var result = data.results[i];
-                        if(result.hasOwnProperty("senses") && isArray(result.senses) && 0 !== result.senses.length) {
-                            var sense = result.senses[0];
+                        if(result.headword.toUpperCase() !== word.toUpperCase()) continue;
 
-                            if(sense.hasOwnProperty("definition")) {
-                                var def = sense.definition;
+                        var datasetOk = false;
+                        for(var j = 0; j < allowedDatasets.length; ++j) {
+                            if(-1 !== result.datasets.indexOf(allowedDatasets[j])) {
+                                datasetOk = true;
+                                break;
+                            }
+                        }
 
-                                // definition property returned from API could be an array of strings or a single string
-                                if(isArray(def)) {
-                                    for(var j = 0; j < def.length; ++j) {
-                                        definitions.push(def[j]);
+
+                        if(datasetOk && result.hasOwnProperty("senses") && isArray(result.senses) && 0 !== result.senses.length) {
+                            for(var j = 0; j < result.senses.length; ++j) {
+                                var sense = result.senses[j];
+
+                                if(sense.hasOwnProperty("definition")) {
+                                    var def = sense.definition;
+
+                                    // definition property returned from API could be an array of strings or a single string
+                                    if(isArray(def)) {
+                                        for(var k = 0; k < def.length; ++k) {
+                                            definitions.push(def[k]);
+                                        }
                                     }
-                                }
-                                else {
-                                    definitions.push(def);
+                                    else {
+                                        definitions.push(def);
+                                    }
                                 }
                             }
                         }

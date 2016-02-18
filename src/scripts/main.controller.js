@@ -33,7 +33,7 @@
         // Function: activate
         // Description: Loads a few startup definitions into the model
         function activate() {
-            dict.defineMultiple(['rent', 'apartment', 'dominion', 'enterprise', 'angular']) // TODO: handle preloading of undefined words
+            dict.defineMultiple(['rent', 'dominion', 'enterprise', 'angular']) // TODO: handle preloading of undefined words
                 .then(function(dataArr) {
                     for(var i = 0; i < dataArr.length; ++i) {
                         handleNewWord(dataArr[i]);

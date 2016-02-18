@@ -15,7 +15,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="input-group">
-                <input ng-model="vm.newWord" ng-enter="vm.define()" type="text" class="form-control" placeholder="Define another word...">
+                <input ng-model="vm.newWord" ng-enter="vm.defineBtnClicked()" type="text" class="form-control" placeholder="Define another word...">
                 <span class="input-group-btn">
                     <button ng-click="vm.defineBtnClicked()" ng-disabled="vm.definitionLoading" class="btn btn-primary" type="button">Define</button>
                 </span>
