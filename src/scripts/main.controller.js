@@ -31,7 +31,7 @@
         // Function: activate
         // Description: Loads a few startup definitions into the model
         function activate() {
-            dict.defineMultiple(['rent', 'dominion', 'enterprise', 'angular', 'effective', 'communication'])
+            dict.defineMultiple(['rent', 'dominion', 'enterprise', 'angular', 'effective', 'communication', 'current', 'hamper', 'ground'])
                 .then(function(dataArr) {
                     for(var i = 0; i < dataArr.length; ++i) {
                         handleNewWord(dataArr[i]);
