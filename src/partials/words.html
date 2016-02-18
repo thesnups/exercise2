@@ -1,7 +1,7 @@
 <div class="all-words">
     <div ng-show="vm.preloadComplete" class="panel panel-default">
         <div class="panel-heading">Words</div>
-        <div class="list-group">
+        <div ng-show="vm.worddefs.length > 0" class="list-group">
             <a ng-repeat="worddef in vm.worddefs" ng-click="vm.viewSingleWord($index)" class="list-group-item">
                 {{worddef.word}}
                 <span class="label label-primary">{{worddef.definitions.length}} definitions</span>
@@ -9,6 +9,9 @@
                     <span ng-click="vm.delWord($index)" class="glyphicon glyphicon-trash"></span>
                 </span>
             </a>
+        </div>
+        <div ng-show="vm.worddefs.length == 0" class="panel-body">
+            No words to show :(
         </div>
     </div>
     <div ng-show="!vm.preloadComplete" ng-include="'partials/loading.html'"></div>
