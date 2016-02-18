@@ -9,7 +9,7 @@
         this.$get = function($http, $q, $log) {
             var dict = this;
             var promiseCache = {};
-            var baseUrl = 'http://api.pearson.com/v2/dictionaries/entries';
+            var baseUrl = 'https://api.pearson.com/v2/dictionaries/entries';
             var allowedDatasets = ['ldoce5', 'lasde', 'wordwise', 'laad3']; // These dictionaries provide English definitions of words
 
             // Function: hitApi
