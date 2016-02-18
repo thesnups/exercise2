@@ -1,5 +1,5 @@
 <div class="all-words">
-    <div class="panel panel-default" ng-show="vm.preloadComplete">
+    <div ng-show="vm.preloadComplete" class="panel panel-default">
         <div class="panel-heading">Words</div>
         <div class="list-group">
             <a ng-repeat="worddef in vm.worddefs" ng-click="vm.viewSingleWord($index)" class="list-group-item">
@@ -11,8 +11,8 @@
             </a>
         </div>
     </div>
-    <div ng-include="'partials/loading.html'"></div>
-    <div class="panel panel-default">
+    <div ng-show="!vm.preloadComplete" ng-include="'partials/loading.html'"></div>
+    <div ng-show="vm.preloadComplete" class="panel panel-default">
         <div class="panel-body">
             <div class="input-group">
                 <input ng-model="vm.newWord" ng-enter="vm.defineBtnClicked()" type="text" class="form-control" placeholder="Define another word...">

@@ -16,12 +16,10 @@
         vm.delWord = delWord;
         vm.errorIsVisible = false;
         vm.errorMsg = '';
-
         vm.showError = showError;
         vm.hideError = hideError;
         vm.viewSingleWord = viewSingleWord;
         vm.defineBtnClicked = defineBtnClicked;
-        
 
         // Single word view
         vm.selectedWord;
@@ -63,9 +61,13 @@
 
                 dict.define(vm.newWord)
                     .then(function(data) {
-                        vm.newWord = '';
                         vm.definitionLoading = false;
-                        if(handleNewWord(data)) viewSingleWord(0); // View the word's definitions immediately
+
+                        // On success, clear the input field and switch to the definitions view
+                        if(handleNewWord(data)) {
+                            vm.newWord = '';
+                            viewSingleWord(0);
+                        }
                     }, function(data) {
                         showError(data);
                         vm.definitionLoading = false;
