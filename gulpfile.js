@@ -48,7 +48,7 @@ gulp.task('scripts', function() {
         .pipe(plugins.angularFilesort())
         .pipe(plugins.addSrc.prepend(vendorJs)) // Add vendor scripts to beginning of stream
         .pipe(plugins.concat(jsOutFile))
-        .pipe(plugins.uglify({ preserveComments: 'license' })).on('error', handleError)
+        //.pipe(plugins.uglify({ preserveComments: 'license' })).on('error', handleError)
         .pipe(gulp.dest('build'));
 });
 

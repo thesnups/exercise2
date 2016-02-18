@@ -17,7 +17,7 @@
             <div class="input-group">
                 <input ng-model="vm.newWord" ng-enter="vm.define()" type="text" class="form-control" placeholder="Define another word...">
                 <span class="input-group-btn">
-                    <button ng-click="vm.define()" class="btn btn-primary" type="button">Define</button>
+                    <button ng-click="vm.defineBtnClicked()" ng-disabled="vm.definitionLoading" class="btn btn-primary" type="button">Define</button>
                 </span>
             </div>
             <div ng-show="vm.errorIsVisible" class="define-error alert alert-danger" role="alert">

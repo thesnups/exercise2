@@ -8,95 +8,107 @@
     function MainController(dict, $location, $routeParams) {
         var vm = this;
 
+        // All words view
         vm.preloadComplete = false;
+        vm.definitionLoading = false;
         vm.worddefs = [];
         vm.newWord = '';
         vm.delWord = delWord;
         vm.errorIsVisible = false;
         vm.errorMsg = '';
 
-        vm.define = define;
-        vm.getWord = getWord;
-        vm.getDefs = getDefs;
+        vm.showError = showError;
         vm.hideError = hideError;
         vm.viewSingleWord = viewSingleWord;
+        vm.defineBtnClicked = defineBtnClicked;
+        
+
+        // Single word view
+        vm.selectedWord;
+        vm.selectedDefs;
         vm.viewWords = viewWords;
 
         activate();
 
-        // Loads a few startup definitions into the model
+        // Function: activate
+        // Description: Loads a few startup definitions into the model
         function activate() {
-            dict.defineMultiple(['rent', 'apartment', 'dominion', 'enterprise', 'angular', 'JavaScript'])
+            dict.defineMultiple(['rent', 'apartment', 'dominion', 'enterprise', 'angular']) // TODO: handle preloading of undefined words
                 .then(function(dataArr) {
                     for(var i = 0; i < dataArr.length; ++i) {
                         handleNewWord(dataArr[i]);
                     }
                     vm.preloadComplete = true;
                 }, function(data) {
-                    vm.errorMsg = data;
-                    vm.errorIsVisible = true;
+                    showError(data);
+                    vm.preloadComplete = true;
                 });
         }
 
-        // Deletes a word from the list
+        // Function: delWord
+        // Description: Deletes a word from the model
         function delWord(idx) {
             vm.worddefs.splice(idx, 1);
         }
 
-        // Attempts to retrieve a definition from the Dictionary provider
-        function define() {
-            var newWord = vm.newWord;
-            vm.newWord = '';
+        // Function: defineBtnClicked
+        // Description: Retrieves a definition from the Dictionary provider and adds it 
+        //  to the model. Displays an error message on failure
+        function defineBtnClicked(newWord) {
+            vm.definitionLoading = true;
 
-            dict.define(newWord)
+            dict.define(vm.newWord)
                 .then(function(data) {
                     handleNewWord(data);
+                    vm.newWord = '';
+                    vm.definitionLoading = false;
                 }, function(data) {
-                    vm.errorMsg = data;
-                    vm.errorIsVisible = true;
+                    showError(data);
+                    vm.definitionLoading = false;
                 });
         }
 
+        // Function: handleNewWord
+        // Description: Adds a word and it's definitions to the model or displays an error
+        //  message if no definitions were found for the word
         function handleNewWord(data) {
-            if(0 === data.definitions.length) {
-                vm.errorMsg = 'No definitions found...';
-                vm.errorIsVisible = true;
-            }
-            else {
-                vm.worddefs.unshift(data);
-                vm.errorIsVisible = false;
-            }
+            vm.worddefs.unshift(data);
+            hideError();
         }
 
-        // Returns the currently selected word
+        // Function: getWord
+        // Description: Returns the currently selected word for the single word view
         function getWord() {
             return $routeParams.word;
         }
 
-        // Returns the definitions of the selected word
-        function getDefs() {
-            var word = $routeParams.word;
-            var worddefs = vm.worddefs.filter(function(val) { return val.word === word; });
-
-            if(0 !== worddefs.length) return worddefs[0].definitions;
-
-            vm.errorMsg = 'Word "' + word + '" has not yet been defined.';
+        // Function: showError
+        // Description: Displays an error message
+        function showError(errorMsg) {
+            vm.errorMsg = errorMsg;
             vm.errorIsVisible = true;
-            viewWords();
         }
 
-        // Hides the error message
+        // Function: hideError
+        // Description: Hides the error message
         function hideError() {
             vm.errorIsVisible = false;
             vm.errorMsg = '';
         }
 
-        // Shows the definitions view
+        // Function: viewSingleWord
+        // Description: Shows the definitions view
         function viewSingleWord(idx) {
+            vm.selectedWord = vm.worddefs[idx].word;
+            var worddefs = vm.worddefs.filter(function(val) { return val.word === vm.selectedWord; });
+            vm.selectedDefs = worddefs[0].definitions;
+
+            // Set the route
             $location.path('/word/' + vm.worddefs[idx].word);
         }
 
-        // Shows the words view
+        // Function: viewWords
+        // Description: Shows the words view
         function viewWords() {
             $location.path('/');
         }
